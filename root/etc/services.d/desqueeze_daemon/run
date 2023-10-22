@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv sh
+
+UMASK_SET=${UMASK_SET:-022}
+umask "$UMASK_SET"
+
+exec s6-setuidgid abc python3 /desqueeze_daemon/desqueeze_daemon/scheduler.py

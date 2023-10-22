@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+if [ -f "/desqueeze_daemon/updated" ]; then
+    echo "[cont-init.d] Installing"
+    python3 -m pip install -U --quiet --disable-pip-version-check /desqueeze_daemon
+    rm /desqueeze_daemon/updated
+    echo "[cont-init.d] Installation done"
+fi

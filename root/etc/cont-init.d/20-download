@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv bash
+
+# download and unpack
+echo "[cont-init.d] Downloading and unpacking"
+
+if [ ! -f "/desqueeze_daemon/desqueeze_daemon/daemon.py" ]; then
+    echo "[cont-init.d] First start, cloning repo"
+    git clone  https://github.com/sasanjac/desqueeze-daemon /desqueeze_daemon
+    touch /desqueeze_daemon/updated
+else
+    cd /desqueeze_daemon
+    localv=$(git rev-parse HEAD)
+    remotev=$(git ls-remote https://github.com/sasanjac/desqueeze-daemon.git refs/heads/main | cut -c1-40)
+    if [ $localv = $remotev ]; then
+        echo -e "[cont-init.d] Latest Version. No update needed"
+    else
+        echo -e "[cont-init.d] Newer Version. Updating"
+        git fetch
+        git reset --hard origin/main
+        touch /desqueeze_daemon/updated
+    fi
+fi
